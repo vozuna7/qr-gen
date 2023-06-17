@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Validated
 public class QRController {
     private final IQRService qrService;
+    @GetMapping
+    public String index(){
+        return "index";
+    }
     @GetMapping("/qr")
     public String createQRCode(@RequestParam("content") @Size(min = 4, max = 2038) final String content,
                                @RequestParam(value = "width",defaultValue = "400") @Max(1000) @Min(0) final int width,
                                @RequestParam(value = "height", defaultValue = "400") @Max(1000) @Min(0) final int height,
                                @RequestParam(value = "color", defaultValue = "WHITE") final Colors color,
                                  Model model){
-        model.addAttribute("imageUrl","data:image/png;base64," + qrService.getQRString(content,width,height,color));
-        return "index";
-    }
-    @GetMapping
-    public String index(){
+        model.addAttribute("imageUrl",qrService.getQRString(content,width,height,color));
         return "index";
     }
 }
